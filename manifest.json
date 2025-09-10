@@ -1,0 +1,14 @@
+{
+  "name": "Tango Solver",
+  "description": "A extension that solve the linkedin's tango puzzle",
+  "version": "1.0",
+  "manifest_version": 3,
+  "content_scripts": [
+    {
+      "js": ["scripts/content.js"],
+      "matches": [
+        "https://www.linkedin.com/games/tango/*"
+      ]
+    }
+  ]
+}
