@@ -49,15 +49,16 @@ function checkBoardValidity(board){
 }
 
 function checkRowValidity(board, row){
-    let sun_count, moon_count = 0;
+    let sun_count = 0, moon_count = 0;
 
     for(let i = 0; i < BOARD_SIZE; i++){
         if(!board[row + i]) { return true; }
         if(board[row + i].sign == SUN_NAME){ sun_count++; }
         else if(board[row + i].sign == MOON_NAME){ moon_count++; }
-        
+        console.log("Checking for: " + i + " Sun: " + sun_count + " Moon: " + moon_count);
     }
-    return (sun_count == moon_count == BOARD_SIZE / 2) ? true : false;
+    console.log(sun_count == moon_count == (BOARD_SIZE / 2));
+    return (sun_count == (BOARD_SIZE / 2) && moon_count == (BOARD_SIZE / 2) ) ? true : false;
 }
 
 function checkColumnValidity(board, column){
@@ -69,7 +70,7 @@ const board_raw = getRawBoard(document);
 // board.style.display = 'none';
 let board = createBoard(board_raw);
 
-if(checkRowValidity(board, 0)){console.log("Yay");}
+if(checkRowValidity(board, 0)){console.log("Yay");} else {console.log("Nay");}
 
 console.log(board[0]);
 console.log(board[1]);
