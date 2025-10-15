@@ -27,14 +27,22 @@ class Cell {
 }
 
 function getRawBoard(document) {
-    return document.querySelector('.lotka-grid');
+    let board_raw = document.querySelector('.lotka-grid');
+
+    // If incognito.
+    if(board_raw == null){
+        const iframe = document.querySelector('.game-launch-page__iframe');
+        const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+
+        board_raw = iframeDoc.querySelector('.lotka-grid');
+    }
+
+    return board_raw;
 }
 
 function createBoard(board_raw) {
     let cell;
-    let edge;
     let svg;
-    let title;
     let board = [];
     let index;
     let sign;
@@ -49,7 +57,6 @@ function createBoard(board_raw) {
                 sign = svg.getAttribute("aria-label");
                 locked = (sign == EMPTY_NAME ? false : true)
                 board[index] = new Cell(sign, locked, index);
-                console.log(sign + " in: " + index);
             }
         }
 
@@ -73,9 +80,7 @@ function set_action(board_raw, board){
                     
                 } else if(edge.classList.contains('lotka-cell-edge--down')){
                     action_neighbor = index + BOARD_SIZE;
-                }
-                console.log(action_neighbor + " x " + index );
-                
+                }                
                 board[index].action.push([action, action_neighbor]);
                 board[action_neighbor].action.push([action, index]);
             } 
@@ -136,7 +141,7 @@ function checkAdjacent(board, index){
     }
 
     if(row + 2 < BOARD_SIZE){
-if (!board_raw) { return null; }        if(board[index + 1 * BOARD_SIZE].sign == sign && board[index + 2 * BOARD_SIZE].sign == sign) { return false;}
+        if(board[index + 1 * BOARD_SIZE].sign == sign && board[index + 2 * BOARD_SIZE].sign == sign) { return false;}
     }
     if(row - 2 > ZERO){ 
         if(board[index - 1 * BOARD_SIZE].sign == sign && board[index - 2 * BOARD_SIZE].sign == sign) { return false;}
@@ -200,10 +205,8 @@ function backtracking(board, index, sign){
 function dispatchClick(el) {
     const down = new MouseEvent('mousedown', { bubbles: true, cancelable: true, view: window });
     const up = new MouseEvent('mouseup', { bubbles: true, cancelable: true, view: window });
-    const click = new MouseEvent('click', { bubbles: true, cancelable: true, view: window });
     el.dispatchEvent(down);
     el.dispatchEvent(up);
-    el.dispatchEvent(click);
 }
 
 function play_board(board_raw, board){
@@ -220,25 +223,19 @@ function play_board(board_raw, board){
     }  
 }
 
+function solve(){
 
+    let board_raw = getRawBoard(document);
 
-const iframe = document.querySelector('.game-launch-page__iframe');
-const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+    let board = createBoard(board_raw);
+    set_action(board_raw, board);
+    console.log(board_raw);
 
-const board_raw = iframeDoc.querySelector('.lotka-grid');
-// const board_raw = document.querySelector('.lotka-grid');
+    new_board = backtracking(board, 0, SUN_NAME);
 
-// board.style.display = 'none';
-console.log(board_raw);
+    console.log("Solution:" + new_board);
 
-let board = createBoard(board_raw);
-set_action(board_raw, board);
-if(checkRowValidity(board, 0)){console.log("Yay");} else {console.log("Nay");}
-if(checkColumnValidity(board, 2)){console.log("Yay2");} else {console.log("Nay2");}
-if(checkAdjacent(board, 21)){console.log("Yay3");} else {console.log("Nay3");}
+    play_board(board_raw, board);
+}
 
-new_board = backtracking(board, 0, SUN_NAME);
-console.log(new_board);
-
-if(checkRowValidity(new_board, 1)){console.log("Yay3");} else {console.log("Nay3");}
-play_board(board_raw, board);
+solve();
