@@ -229,7 +229,6 @@ function solve(){
 
     let board = createBoard(board_raw);
     set_action(board_raw, board);
-    console.log(board_raw);
 
     new_board = backtracking(board, 0, SUN_NAME);
 

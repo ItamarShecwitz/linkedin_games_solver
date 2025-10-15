@@ -3,6 +3,12 @@
   "description": "A extension that solves LinkedIn's Tango puzzle",
   "version": "1.0",
   "manifest_version": 3,
+   "icons": {
+    "16": "tango_solver.png",
+    "32": "tango_solver.png",
+    "48": "tango_solver.png",
+    "128": "tango_solver.png"
+  },
   "action": {
     "default_popup": "popup.html",
     "default_title": "Tango Solver"
