@@ -237,5 +237,3 @@ function solve(){
 
     play_board(board_raw, board);
 }
-
-solve();

@@ -1,14 +1,17 @@
 {
   "name": "Tango Solver",
-  "description": "A extension that solve the linkedin's tango puzzle",
+  "description": "A extension that solves LinkedIn's Tango puzzle",
   "version": "1.0",
   "manifest_version": 3,
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Tango Solver"
+  },
   "content_scripts": [
     {
       "js": ["scripts/content.js"],
-      "matches": [
-        "https://www.linkedin.com/games/tango/*"
-      ]
+      "matches": ["https://www.linkedin.com/games/tango/*"]
     }
-  ]
+  ],
+  "permissions": ["activeTab", "scripting"]
 }
