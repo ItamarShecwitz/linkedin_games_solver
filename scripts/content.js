@@ -6,6 +6,7 @@ const CROSS_NAME = "Cross";
 const EQUAL_NAME = "Equal";
 const NUMBER_OF_DIRECTIONS = 4;
 const ZERO = 0;
+const SIGNS_OPTIONS = [SUN_NAME, MOON_NAME];
 
 class Cell {
     constructor(sign, locked, index) {
@@ -177,28 +178,27 @@ function checkCellValidity(board, index){
     return (checkRowValidity(board, board[index].row) && checkColumnValidity(board, board[index].column) && checkAdjacent(board, index) && checkAction(board, index));
 }
 
-function backtracking(board, index, sign){
-    if(index >= 36){
+function backtracking(board, index = 0){
+    if(index >= BOARD_SIZE * BOARD_SIZE){
         return board;
     }
 
-    if(!board[index].locked){
-        board[index].sign = sign;
+    if(board[index].locked){
+        return backtracking(board, index + 1);
     }
-    
-    let new_board = null;
-    
-    if(checkCellValidity(board, index)){
 
-        new_board = backtracking(board, index + 1, MOON_NAME);
-        if(new_board == null){
-            new_board = backtracking(board, index + 1, SUN_NAME);
+    for (let sign of SIGNS_OPTIONS){
+        board[index].sign = sign;
+
+        if(checkCellValidity(board, index)){
+            let new_board = backtracking(board, index + 1);
+            if (new_board) return new_board;
         }
-        if(new_board == null && !board[index + 1].locked){
-            board[index + 1].sign = EMPTY_NAME;
-        }
+
+        board[index].sign = EMPTY_NAME;
     }
-    return new_board;
+    
+    return null;
 
 }
 
@@ -228,11 +228,15 @@ function solve(){
     let board_raw = getRawBoard(document);
 
     let board = createBoard(board_raw);
+    console.log("Board:")
+    console.log(board);
+
     set_action(board_raw, board);
 
     new_board = backtracking(board, 0, SUN_NAME);
-
-    console.log("Solution:" + new_board);
+    if (new_board == null){new_board = backtracking(board, 0, MOON_NAME);}
+    console.log("Solution:")
+    console.log(new_board);
 
     play_board(board_raw, board);
 }

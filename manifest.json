@@ -13,11 +13,5 @@
     "default_popup": "popup.html",
     "default_title": "Tango Solver"
   },
-  "content_scripts": [
-    {
-      "js": ["scripts/content.js"],
-      "matches": ["https://www.linkedin.com/games/tango/*"]
-    }
-  ],
   "permissions": ["activeTab", "scripting"]
 }

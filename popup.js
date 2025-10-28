@@ -1,8 +1,13 @@
 document.getElementById('solve').addEventListener('click', async () => {
-    const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
+  const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
 
-    chrome.scripting.executeScript({
-        target: { tabId: tab.id },
-        func: () => {solve();}
-    });
+  await chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    files: ['scripts/content.js']
+  });
+
+  await chrome.scripting.executeScript({
+    target: { tabId: tab.id },
+    func: () => solve()
+  });
 });
